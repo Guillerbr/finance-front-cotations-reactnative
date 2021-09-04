@@ -1,26 +1,36 @@
 import React from 'react'
-import { View, Text, Platform } from 'react-native'
-import Colors from '../utils/Colors'
+import { View, Text, Platform } from 'react-native';
 
-export default function Header({ text, size, fontColor }) {
+export default function Header({ text, size, colors }) {
+
     return (
         <>
             <View style={{
                 height: Platform.OS === 'ios' ? 20 : 0,
-                backgroundColor: Colors.primary,
+                backgroundColor: colors.primary,
                 width: "100%",
             }} />
+            <View
+                style={{
+                    backgroundColor: colors.background,
+                    height: Platform.OS === 'ios' || 20,
+                    width: "100%",
+                    paddingVertical: 30,
+                    position: 'absolute'
+                }}
+            />
             <View style={{
                 height: Platform.OS === 'ios' || 20,
-                backgroundColor: Colors.primary || '#d1d1d1',
+                backgroundColor: colors.primary || '#d1d1d1',
                 width: "100%",
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: 30
+                paddingVertical: 30,
+                borderBottomRightRadius: 50,
             }}>
                 <Text style={{
                     fontSize: size || 17,
-                    color: fontColor || 'white',
+                    color: colors.textHeader || 'white',
                 }}>{text}</Text>
             </View>
         </>

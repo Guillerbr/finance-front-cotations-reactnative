@@ -7,6 +7,7 @@ import HomeScreen from './screens/HomeScreen';
 import GraphScreen from './screens/GraphScreen';
 
 import { getToken } from './services/Auth';
+import Colors from './utils/Colors';
 
 const Stack = createStackNavigator()
 
@@ -46,7 +47,7 @@ const Routes = () => {
 
     return (
         <NavigationContainer>
-            <StatusBar barStyle={scheme == 'dark' ? 'dark-content' : 'light-content'} />
+            <StatusBar backgroundColor={Colors.primary} barStyle={scheme == 'dark' ? 'dark-content' : 'light-content'} />
             <AppScreens token={token} />
         </NavigationContainer>
     )

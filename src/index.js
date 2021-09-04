@@ -12,6 +12,7 @@ const App = () => {
         colors: {
             background: '#FFF',
             text: '#333333',
+            textHeader: '#FFF',
             primary: Colors.primary,
             secundary: Colors.secondary
         }
@@ -22,6 +23,7 @@ const App = () => {
         colors: {
             background: '#333333',
             text: '#ffffff',
+            textHeader: '#d1d1d1',
             primary: Colors.primary,
             secundary: Colors.secondary
         }
