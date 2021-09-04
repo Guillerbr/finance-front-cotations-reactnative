@@ -44,7 +44,7 @@ export default function Header({ text, size, colors, onPress }) {
                 </View>
 
                 <Text style={{
-                    fontSize: size || 17,
+                    fontSize: size || 18,
                     color: colors.textHeader || 'white',
                 }}>{text}</Text>
 

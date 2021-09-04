@@ -1,14 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { useTheme } from 'react-native-paper';
 import Header from '../components/Header'
-import { Entypo } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { queryDidMount } from '../api/queryDidMount';
 
-export default function GraphScreen({ route }) {
+export default function GraphScreen({ route, navigation }) {
     const { colors } = useTheme()
 
+    const [data, setData] = useState([])
+
+    useEffect(() => {
+        queryDidMount().then((e) => setData(e)).catch((e) => console.log(e))
+    }, [])
+
     const resetPress = () => {
-        console.log('Pressed')
+        AsyncStorage.clear().then(() => {
+            navigation.reset({
+                index: 0,
+                routes: [{
+                    name: 'GraphScreen',
+                }]
+            })
+        })
     }
 
     return (
@@ -16,7 +30,7 @@ export default function GraphScreen({ route }) {
             backgroundColor: colors.primary
         }]}>
 
-            <Header onPress={resetPress} text={'GraphScreen'} colors={colors} />
+            <Header onPress={resetPress} text={'Finanças'} colors={colors} />
 
             <View style={[styles.body, {
                 backgroundColor: colors.background
