@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import Header from '../components/Header'
 
-export default function GraphScreen() {
+export default function GraphScreen({ route }) {
     return (
         <View style={styles.container}>
 
