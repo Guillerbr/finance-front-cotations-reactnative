@@ -7,6 +7,7 @@ import { Feather, FontAwesome } from '@expo/vector-icons';
 import { useTheme } from 'react-native-paper';
 import useStateWithCallback from '../hooks/useStateWithCallback';
 import { imagemUrl } from '../utils/Keys';
+import { setToken } from '../services/Auth';
 
 export default function HomeScreen({ navigation }) {
     const { colors } = useTheme()
@@ -89,7 +90,7 @@ export default function HomeScreen({ navigation }) {
     const handlerEnter = (user) => {
         if (verification() && !loading) {
             setLoading(true, async () => {
-                await new Promise(resolve => setTimeout(resolve, 3000)).then(() => {
+                await new setToken('user').then(() => {
                     navigation.reset({
                         index: 0,
                         routes: [{
@@ -97,6 +98,8 @@ export default function HomeScreen({ navigation }) {
                             params: user
                         }]
                     })
+                }).catch((e) => {
+                    setLoading(false, () => Alert.alert('Aviso', e))
                 })
             })
         }
