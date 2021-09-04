@@ -12,6 +12,7 @@ import { setToken } from '../services/Auth';
 export default function HomeScreen({ navigation }) {
     const { colors } = useTheme()
     const [loading, setLoading] = useStateWithCallback(false)
+
     const [data, setData] = useState({
         username: '',
         maskedValue: '',
