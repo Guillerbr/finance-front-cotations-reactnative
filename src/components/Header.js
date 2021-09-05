@@ -1,10 +1,10 @@
 import React from 'react'
-import { View, Text, Platform, TouchableOpacity, useWindowDimensions } from 'react-native';
+import { View, Text, Platform, TouchableOpacity, useWindowDimensions, TextInput } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 
-export default function Header({ text, size, colors, onPress }) {
+export default function Header({ text, size, colors, onPress, user }) {
     const { width } = useWindowDimensions()
-
+    console.log(user)
     return (
         <>
             <View style={{
@@ -28,7 +28,6 @@ export default function Header({ text, size, colors, onPress }) {
                 alignItems: 'center',
                 justifyContent: 'center',
                 paddingVertical: 30,
-                borderBottomRightRadius: 30,
             }}>
                 <View
                     style={{
@@ -61,6 +60,30 @@ export default function Header({ text, size, colors, onPress }) {
                         size={24}
                     />
                 </TouchableOpacity>
+            </View>
+
+            <View style={{
+                backgroundColor: colors.primary || '#d1d1d1',
+            }}>
+                <TextInput
+                    editable
+                    style={{
+                        color: colors.textHeader
+                    }}
+                    value={user.username || 'undefined'} />
+            </View>
+
+            <View style={{
+                backgroundColor: colors.primary || '#d1d1d1',
+                paddingVertical: 30,
+                borderBottomRightRadius: 30,
+            }}>
+                <TextInput
+                    style={{
+                        color: colors.textHeader
+                    }}
+                    editable={false}
+                    value={user.maskedValue || 'undefined'} />
             </View>
         </>
     )
