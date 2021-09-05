@@ -3,53 +3,38 @@ import { View, Text, StyleSheet, TouchableOpacity, Platform, TextInput, Activity
 import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import { TextInputMask } from 'react-native-masked-text'
-import { Feather, FontAwesome } from '@expo/vector-icons';
+import { Feather, FontAwesome, Entypo } from '@expo/vector-icons';
 import { useTheme } from 'react-native-paper';
 import useStateWithCallback from '../hooks/useStateWithCallback';
 import { imagemUrl } from '../utils/Keys';
 import { setToken } from '../services/Auth';
 
 export default function HomeScreen({ navigation }) {
-    const { colors } = useTheme()
-    const [loading, setLoading] = useStateWithCallback(false)
 
+    const { colors } = useTheme()
+
+    const [loading, setLoading] = useStateWithCallback(false)
     const [data, setData] = useState({
         username: '',
         maskedValue: '',
-        value: 500,
-        check_textInputChange: false,
-        secureTextEntry: false,
+        value: 0,
+        checkUserName: false,
+        checkValue: false,
         isValidUser: true,
         isValidValue: true,
     })
 
-    const textInputChange = (text) => {
+    const handleValidUser = (text) => {
         if (text.trim().length >= 4) {
             setData({
                 ...data,
                 username: text,
-                check_textInputChange: true,
                 isValidUser: true
             });
         } else {
             setData({
                 ...data,
                 username: text,
-                check_textInputChange: false,
-                isValidUser: false
-            })
-        }
-    }
-
-    const handleValidUser = (text) => {
-        if (text.trim().length >= 4) {
-            setData({
-                ...data,
-                isValidUser: true
-            })
-        } else {
-            setData({
-                ...data,
                 isValidUser: false
             })
         }
@@ -73,13 +58,6 @@ export default function HomeScreen({ navigation }) {
         }
     }
 
-    const updateSecureTextEntry = () => {
-        setData({
-            ...data,
-            secureTextEntry: !data.secureTextEntry
-        })
-    }
-
     const verification = () => {
         if (data.isValidUser && data.username && data.isValidValue && data.maskedValue) return true
         Alert.alert('Aviso', 'Preencha e valide todos os campos para continuar')
@@ -87,15 +65,19 @@ export default function HomeScreen({ navigation }) {
     }
 
     const handlerEnter = (user) => {
+        const newUser = {
+            name: user.username,
+            money: user.value
+        }
+
         if (verification() && !loading) {
             setLoading(true, async () => {
-                await new setToken('user').then(() => {
+                await new setToken(JSON.stringify(newUser)).then(() => {
                     setTimeout(() => {
                         navigation.reset({
                             index: 0,
                             routes: [{
                                 name: 'FinanceScreen',
-                                params: user
                             }]
                         })
                     }, 1000)
@@ -133,16 +115,16 @@ export default function HomeScreen({ navigation }) {
                         size={20}
                     />
                     <TextInput
-                        placeholder="Seu nome"
-                        placeholderTextColor="#666666"
+                        placeholder="Digite seu nome"
+                        placeholderTextColor={colors.placeholder}
                         style={[styles.textInput, {
                             color: colors.text
                         }]}
+                        value={data.username}
                         autoCapitalize="none"
-                        onChangeText={(text) => textInputChange(text)}
-                        onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
+                        onChangeText={(text) => handleValidUser(text)}
                     />
-                    {data.check_textInputChange &&
+                    {data.isValidUser && data.username ?
                         <Animatable.View animation="bounceIn">
                             <Feather
                                 name="check-circle"
@@ -150,6 +132,7 @@ export default function HomeScreen({ navigation }) {
                                 size={20}
                             />
                         </Animatable.View>
+                        : null
                     }
                 </View>
                 {data.isValidUser ||
@@ -163,8 +146,8 @@ export default function HomeScreen({ navigation }) {
                     marginTop: 15
                 }]}>Valor</Text>
                 <View style={styles.action}>
-                    <FontAwesome
-                        name="money"
+                    <Entypo
+                        name="credit"
                         color={colors.text}
                         size={20}
                     />
@@ -179,9 +162,9 @@ export default function HomeScreen({ navigation }) {
                         }}
                         keyboardType={'numeric'}
                         value={data.maskedValue}
-                        placeholder="Digite o valor em R$"
-                        placeholderTextColor="#666666"
-                        secureTextEntry={data.secureTextEntry ? true : false}
+                        placeholder="Digite o valor"
+                        placeholderTextColor={colors.placeholder}
+                        checkValue={data.checkValue ? true : false}
                         style={[styles.textInput, {
                             color: colors.text
                         }]}
@@ -190,21 +173,16 @@ export default function HomeScreen({ navigation }) {
                         includeRawValueInChangeText={true}
                         onChangeText={(maskedValue, value) => handleValueChange(maskedValue, value)}
                     />
-                    <TouchableOpacity onPress={updateSecureTextEntry}>
-                        {data.secureTextEntry ?
+                    {data.isValidValue && data.maskedValue ?
+                        <Animatable.View animation="bounceIn">
                             <Feather
-                                name="eye-off"
-                                color="grey"
+                                name="check-circle"
+                                color="green"
                                 size={20}
                             />
-                            :
-                            <Feather
-                                name="eye"
-                                color="grey"
-                                size={20}
-                            />
-                        }
-                    </TouchableOpacity>
+                        </Animatable.View>
+                        : null
+                    }
                 </View>
                 {data.isValidValue ||
                     <Animatable.View animation="fadeInLeft" duration={500}>
@@ -221,7 +199,7 @@ export default function HomeScreen({ navigation }) {
                             start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                             style={styles.onDashboard}>
                             <Text style={[styles.textEnter, {
-                                color: colors.text
+                                color: colors.textHeader
                             }]}>
                                 {loading ? <ActivityIndicator size={'small'} color={'white'} /> : 'Entrar'}
                             </Text>
@@ -262,9 +240,10 @@ const styles = StyleSheet.create({
     },
     action: {
         flexDirection: 'row',
-        paddingVertical: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#f2f2f2',
+        paddingTop: 10,
+        paddingBottom: 2,
+        borderBottomWidth: 1.5,
+        borderBottomColor: '#d1d1d1',
     },
     actionError: {
         flexDirection: 'row',

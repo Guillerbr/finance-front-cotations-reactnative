@@ -11,9 +11,10 @@ const App = () => {
         ...DefaultTheme.colors,
         colors: {
             background: '#FFF',
-            text: '#333333',
+            text: '#333',
             textHeader: '#FFF',
             backgroundSearch: '#d1d1d1',
+            placeholder: '#777',
             primary: Colors.primary,
             secundary: Colors.secondary
         }
@@ -22,9 +23,10 @@ const App = () => {
     const dark = {
         ...DefaultTheme.colors,
         colors: {
-            background: '#333333',
-            text: '#ffffff',
+            background: '#333',
+            text: '#fff',
             textHeader: '#d1d1d1',
+            placeholder: '#a1a1a1',
             backgroundSearch: '#555',
             primary: Colors.primary,
             secundary: Colors.secondary

@@ -1,33 +1,37 @@
-import React from 'react'
-import { View, Text, Platform, TouchableOpacity, useWindowDimensions, TextInput } from 'react-native';
-import { Entypo } from '@expo/vector-icons';
+import React, { useState } from 'react'
+import { View, Text, TouchableOpacity, useWindowDimensions, TextInput } from 'react-native';
+import { Entypo, Feather } from '@expo/vector-icons';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default function Header({ text, size, colors, onPress, user }) {
+
     const { width } = useWindowDimensions()
-    console.log(user)
+
+    const [secureTextEntry, setSecureTextEntry] = useState(false)
+
     return (
-        <>
+        <LinearGradient
+            colors={[colors.primary, colors.secundary]}
+            start={{ x: 0, y: 0 }} end={{ x: 1.5, y: 0 }}
+            style={{
+                borderBottomRightRadius: 30,
+            }}>
             <View style={{
-                height: Platform.OS === 'ios' ? 20 : 0,
-                backgroundColor: colors.primary,
+                height: 22,
                 width,
             }} />
             <View
                 style={{
-                    backgroundColor: colors.background,
-                    height: Platform.OS === 'ios' || 20,
                     width,
-                    paddingVertical: 30,
+                    paddingVertical: 10,
                     position: 'absolute'
                 }}
             />
             <View style={{
-                height: Platform.OS === 'ios' || 20,
-                backgroundColor: colors.primary || '#d1d1d1',
                 width,
                 alignItems: 'center',
                 justifyContent: 'center',
-                paddingVertical: 30,
+                paddingVertical: 10
             }}>
                 <View
                     style={{
@@ -45,7 +49,9 @@ export default function Header({ text, size, colors, onPress, user }) {
                 <Text style={{
                     fontSize: size || 18,
                     color: colors.textHeader || 'white',
-                }}>{text}</Text>
+                }}>
+                    {text}
+                </Text>
 
                 <TouchableOpacity
                     onPress={onPress}
@@ -62,29 +68,65 @@ export default function Header({ text, size, colors, onPress, user }) {
                 </TouchableOpacity>
             </View>
 
-            <View style={{
-                backgroundColor: colors.primary || '#d1d1d1',
-            }}>
-                <TextInput
-                    editable
-                    style={{
-                        color: colors.textHeader
-                    }}
-                    value={user.username || 'undefined'} />
-            </View>
+            <TextInput
+                editable={false}
+                style={{
+                    color: colors.textHeader,
+                    fontSize: 16,
+                    borderBottomWidth: 1.5,
+                    marginHorizontal: 20,
+                    paddingTop: 0,
+                    paddingBottom: 5,
+                    borderColor: colors.textHeader,
+                }}
+                value={user.name ? 'Olá, ' + user.name.toString() : ''}
+            />
 
             <View style={{
-                backgroundColor: colors.primary || '#d1d1d1',
-                paddingVertical: 30,
+                paddingTop: 20,
+                paddingBottom: 10,
                 borderBottomRightRadius: 30,
+                justifyContent: 'center',
+                paddingHorizontal: 25,
             }}>
-                <TextInput
-                    style={{
-                        color: colors.textHeader
-                    }}
-                    editable={false}
-                    value={user.maskedValue || 'undefined'} />
+
+                <Text style={{
+                    color: colors.textHeader,
+                    fontSize: 17,
+                }}>Saldo disponível</Text>
+
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                }}>
+                    <TextInput
+                        style={{
+                            color: colors.textHeader,
+                            fontSize: 16,
+                            marginTop: -5
+                        }}
+                        secureTextEntry={secureTextEntry}
+                        editable={false}
+                        value={user.money ? 'R$' + user.money.toString() : ''}
+                    />
+
+                    <TouchableOpacity
+                        style={{
+                            marginTop: -5,
+                            marginLeft: 5
+                        }}
+                        onPress={() => setSecureTextEntry(!secureTextEntry)}>
+                        <Feather
+                            name={secureTextEntry ? "eye-off" : "eye"}
+                            color={colors.textHeader}
+                            style={{
+                                paddingLeft: secureTextEntry ? -5 : 0,
+                            }}
+                            size={20}
+                        />
+                    </TouchableOpacity>
+                </View>
             </View>
-        </>
+        </LinearGradient>
     )
 }
