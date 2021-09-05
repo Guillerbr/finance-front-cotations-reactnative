@@ -81,24 +81,24 @@ export default function HomeScreen({ navigation }) {
     }
 
     const verification = () => {
-        if (!data.username || !data.value) {
-            Alert.alert('Aviso', 'Preencha todos os campos para continuar')
-            return false
-        }
-        return true
+        if (data.isValidUser && data.username && data.isValidValue && data.maskedValue) return true
+        Alert.alert('Aviso', 'Preencha e valide todos os campos para continuar')
+        return false
     }
 
     const handlerEnter = (user) => {
         if (verification() && !loading) {
             setLoading(true, async () => {
                 await new setToken('user').then(() => {
-                    navigation.reset({
-                        index: 0,
-                        routes: [{
-                            name: 'GraphScreen',
-                            params: user
-                        }]
-                    })
+                    setTimeout(() => {
+                        navigation.reset({
+                            index: 0,
+                            routes: [{
+                                name: 'FinanceScreen',
+                                params: user
+                            }]
+                        })
+                    }, 1000)
                 }).catch((e) => {
                     setLoading(false, () => Alert.alert('Aviso', e))
                 })
@@ -221,7 +221,7 @@ export default function HomeScreen({ navigation }) {
                             start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                             style={styles.onDashboard}>
                             <Text style={[styles.textEnter, {
-                                color: '#fff'
+                                color: colors.text
                             }]}>
                                 {loading ? <ActivityIndicator size={'small'} color={'white'} /> : 'Entrar'}
                             </Text>
@@ -295,6 +295,6 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     textEnter: {
-        fontSize: 18,
+        fontSize: 17,
     }
 })

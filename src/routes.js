@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 
 import HomeScreen from './screens/HomeScreen';
-import GraphScreen from './screens/GraphScreen';
+import FinanceScreen from './screens/FinanceScreen';
 
 import { getToken } from './services/Auth';
 import Colors from './utils/Colors';
@@ -19,9 +19,9 @@ const AppScreens = ({ token }) => {
                     headerShown: false,
                     cardStyleInterpolator: CardStyleInterpolators.forNoAnimation
                 }}
-                initialRouteName={token ? 'GraphScreen' : 'HomeScreen'}>
+                initialRouteName={token ? 'FinanceScreen' : 'HomeScreen'}>
                 <Stack.Screen name="HomeScreen" component={HomeScreen} />
-                <Stack.Screen name="GraphScreen" component={GraphScreen} />
+                <Stack.Screen name="FinanceScreen" component={FinanceScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     )

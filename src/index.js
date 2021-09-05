@@ -13,6 +13,7 @@ const App = () => {
             background: '#FFF',
             text: '#333333',
             textHeader: '#FFF',
+            backgroundSearch: '#d1d1d1',
             primary: Colors.primary,
             secundary: Colors.secondary
         }
@@ -24,6 +25,7 @@ const App = () => {
             background: '#333333',
             text: '#ffffff',
             textHeader: '#d1d1d1',
+            backgroundSearch: '#555',
             primary: Colors.primary,
             secundary: Colors.secondary
         }
