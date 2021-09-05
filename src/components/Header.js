@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, TouchableOpacity, useWindowDimensions, TextInput } from 'react-native';
 import { Entypo, Feather } from '@expo/vector-icons';
 import LinearGradient from 'react-native-linear-gradient';
+import * as Animatable from 'react-native-animatable';
 
 export default function Header({ text, size, colors, onPress, user }) {
 
@@ -16,117 +17,117 @@ export default function Header({ text, size, colors, onPress, user }) {
             style={{
                 borderBottomRightRadius: 30,
             }}>
-            <View style={{
-                height: 22,
-                width,
-            }} />
-            <View
-                style={{
+            <Animatable.View duration={1500} animation="fadeInLeft">
+                <View style={{
+                    height: 22,
                     width,
-                    paddingVertical: 10,
-                    position: 'absolute'
-                }}
-            />
-            <View style={{
-                width,
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingVertical: 10
-            }}>
+                }} />
                 <View
                     style={{
-                        position: 'absolute',
-                        left: 10,
-                        padding: 10
-                    }}>
-                    <Entypo
-                        name="trash"
-                        color={'transparent'}
-                        size={24}
-                    />
-                </View>
-
-                <Text style={{
-                    fontSize: size || 18,
-                    color: colors.textHeader || 'white',
-                }}>
-                    {text}
-                </Text>
-
-                <TouchableOpacity
-                    onPress={onPress}
-                    style={{
-                        position: 'absolute',
-                        right: 10,
-                        padding: 10
-                    }}>
-                    <Entypo
-                        name="trash"
-                        color={colors.textHeader}
-                        size={24}
-                    />
-                </TouchableOpacity>
-            </View>
-
-            <TextInput
-                editable={false}
-                style={{
-                    color: colors.textHeader,
-                    fontSize: 16,
-                    borderBottomWidth: 1.5,
-                    marginHorizontal: 20,
-                    paddingTop: 0,
-                    paddingBottom: 5,
-                    borderColor: colors.textHeader,
-                }}
-                value={user.name ? 'Olá, ' + user.name.toString() : ''}
-            />
-
-            <View style={{
-                paddingTop: 20,
-                paddingBottom: 10,
-                borderBottomRightRadius: 30,
-                justifyContent: 'center',
-                paddingHorizontal: 25,
-            }}>
-
-                <Text style={{
-                    color: colors.textHeader,
-                    fontSize: 17,
-                }}>Saldo disponível</Text>
-
+                        width,
+                        paddingVertical: 10,
+                        position: 'absolute'
+                    }}
+                />
                 <View style={{
-                    flexDirection: 'row',
+                    width,
                     alignItems: 'center',
+                    justifyContent: 'center',
+                    paddingVertical: 10
                 }}>
-                    <TextInput
+                    <View
                         style={{
-                            color: colors.textHeader,
-                            fontSize: 16,
-                            marginTop: -5
-                        }}
-                        secureTextEntry={secureTextEntry}
-                        editable={false}
-                        value={user.money ? 'R$' + user.money.toString() : ''}
-                    />
+                            position: 'absolute',
+                            left: 10,
+                            padding: 10
+                        }}>
+                        <Entypo
+                            name="trash"
+                            color={'transparent'}
+                            size={24}
+                        />
+                    </View>
+
+                    <Text style={{
+                        fontSize: size || 18,
+                        color: colors.textHeader || 'white',
+                    }}>
+                        {text}
+                    </Text>
 
                     <TouchableOpacity
+                        onPress={onPress}
                         style={{
-                            marginTop: -5,
-                            marginLeft: 5
-                        }}
-                        onPress={() => setSecureTextEntry(!secureTextEntry)}>
-                        <Feather
-                            name={secureTextEntry ? "eye-off" : "eye"}
+                            position: 'absolute',
+                            right: 10,
+                            padding: 10
+                        }}>
+                        <Entypo
+                            name="trash"
                             color={colors.textHeader}
-                            style={{
-                                paddingLeft: secureTextEntry ? -5 : 0,
-                            }}
-                            size={20}
+                            size={24}
                         />
                     </TouchableOpacity>
                 </View>
-            </View>
+
+                <TextInput
+                    editable={false}
+                    style={{
+                        color: colors.textHeader,
+                        fontSize: 16,
+                        borderBottomWidth: 1.5,
+                        marginHorizontal: 20,
+                        paddingTop: 0,
+                        paddingBottom: 5,
+                        borderColor: colors.textHeader,
+                    }}
+                    value={user.name ? 'Olá, ' + user.name.toString() : ''}
+                />
+
+                <View style={{
+                    paddingTop: 20,
+                    paddingBottom: 10,
+                    borderBottomRightRadius: 30,
+                    justifyContent: 'center',
+                    paddingHorizontal: 25,
+                }}>
+
+                    <Text style={{
+                        color: colors.textHeader,
+                        fontSize: 17,
+                    }}>Saldo disponível</Text>
+
+                    <View style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                    }}>
+                        <TextInput
+                            style={{
+                                color: colors.textHeader,
+                                fontSize: 16,
+                                marginTop: -5,
+                                width: width * 0.25
+                            }}
+                            secureTextEntry={secureTextEntry}
+                            editable={false}
+                            value={user.money ? 'R$' + user.money.toString() : ''}
+                        />
+
+                        <TouchableOpacity
+                            style={{
+                                marginTop: -7,
+                                marginLeft: 5
+                            }}
+                            onPress={() => setSecureTextEntry(!secureTextEntry)}>
+                            <Feather
+                                name={secureTextEntry ? "eye-off" : "eye"}
+                                color={colors.textHeader}
+                                size={20}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Animatable.View>
         </LinearGradient>
     )
 }
