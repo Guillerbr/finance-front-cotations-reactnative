@@ -5,6 +5,7 @@ import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/
 
 import HomeScreen from './screens/HomeScreen';
 import FinanceScreen from './screens/FinanceScreen';
+import DetailsScreen from './screens/DetailsScreen';
 
 import { getToken } from './services/Auth';
 
@@ -21,6 +22,7 @@ const AppScreens = ({ token }) => {
                 initialRouteName={token ? 'FinanceScreen' : 'HomeScreen'}>
                 <Stack.Screen name="HomeScreen" component={HomeScreen} />
                 <Stack.Screen name="FinanceScreen" component={FinanceScreen} />
+                <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     )
