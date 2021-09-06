@@ -10,6 +10,6 @@ export function queryCompare(input, list) {
 
 export function formatToLocale(value) {
     let formated = value.split('').reverse().join('').replace('.', ',').split('').reverse().join('')
-    return formated
+    return parseFloat(formated).toFixed(2)
 }
 

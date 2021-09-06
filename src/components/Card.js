@@ -1,6 +1,5 @@
 import React from 'react'
 import { Text, TouchableOpacity, StyleSheet } from 'react-native'
-import { formatToLocale } from '../utils/Functions';
 
 export default function Card({ colors, text, onPress }) {
     return (

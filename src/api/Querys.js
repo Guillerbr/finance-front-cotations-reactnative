@@ -14,6 +14,22 @@ export async function queryCompany(input) {
     })
 }
 
+
+export async function queryLastRefreshed(input) {
+    return new Promise(function (resolve, reject) {
+        const url = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${input}&interval=5min&apikey=${apiKey}`
+
+        fetch(url).then(resp => {
+            return resp.json()
+        }).then((json) => {
+            if (Object.keys(json).includes('Note'))
+                reject({ status: 'error', error: error })
+            resolve(json)
+        }).catch(error => reject({ status: 'error', error: error }))
+    })
+}
+
+
 export async function queryEarnings(input) {
     return new Promise(function (resolve, reject) {
         const url = `https://www.alphavantage.co/query?function=EARNINGS&symbol=${input}&apikey=${apiKey}`

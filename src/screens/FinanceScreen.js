@@ -9,21 +9,16 @@ import Header from '../components/Header';
 import CompanyCards from '../components/CompanyCards';
 
 import { getToken } from '../services/Auth';
-import { queryCompany, queryEarnings, queryHistoric } from '../api/Querys';
-import { queryCompare } from '../utils/Functions';
-import { list } from '../utils/ListData'
+import { queryCompany } from '../api/Querys';
 
-export default function GraphScreen({ route, navigation }) {
+export default function GraphScreen({ navigation }) {
     const { colors } = useTheme()
     const { width, height } = useWindowDimensions()
 
-    const [price, setPrice] = useState({})
-    const [gains, setGains] = useState({})
-    const [historic, setHistoric] = useState({})
-    const [compare, setCompare] = useState({})
+    const [user, setUser] = useState({})
+    const [company, setCompany] = useState({})
 
     const [loading, setLoading] = useState(true)
-    const [user, setUser] = useState({})
     const [input, setInput] = useState('')
 
     useEffect(() => {
@@ -46,34 +41,19 @@ export default function GraphScreen({ route, navigation }) {
     async function LoadingData() {
         try {
             const company = await queryCompany(input.trim())
-            const earnings = await queryEarnings(input.trim())
-            const historic = await queryHistoric(input.trim())
-
-            setPrice(company["Global Quote"])
-            setGains({
-                quarterly: Object.values(earnings["quarterlyEarnings"])[0],
-                annual: Object.values(earnings["annualEarnings"])[0]
-            })
-            setHistoric(Object.entries(historic["Monthly Time Series"]))
-            setCompare(queryCompare(input, list))
-
+            setCompany(company["Global Quote"])
         } catch (error) {
             Alert.alert('Alerta', 'Aguarde alguns segundos e tente novamente')
-
         }
-
         setLoading(true)
     }
 
     const Search = async () => {
         Keyboard.dismiss()
 
-        if (!input) {
-            setPrice({})
-            setGains({})
-            setHistoric({})
-            setCompare({})
-        }
+        if (!input)
+            setCompany({})
+
         else if (loading) {
             setLoading(false)
             LoadingData()
@@ -130,18 +110,16 @@ export default function GraphScreen({ route, navigation }) {
                     change={(text) => setInput(text)}
                 />
 
-                {Object.keys(price).length > 0 && Object.keys(gains).length > 0 && Object.keys(historic).length > 0 && Object.keys(compare).length > 0 ?
+                {Object.keys(company).length > 0 ?
                     <CompanyCards
                         user={user}
                         colors={colors}
-                        price={price}
-                        gains={gains}
-                        historic={historic}
-                        compare={compare}
+                        company={company}
+                        navigation={navigation}
+                        input={input}
                     />
                     : null
                 }
-
 
             </View>
         </View >
