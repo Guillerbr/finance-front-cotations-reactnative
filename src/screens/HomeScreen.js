@@ -193,6 +193,7 @@ export default function HomeScreen({ navigation }) {
 
                 <View style={styles.button}>
                     <TouchableOpacity
+                        testId={'loginButton'}
                         style={styles.onDashboard}
                         onPress={() => handlerEnter(data)}>
                         <LinearGradient

@@ -6,32 +6,12 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import SearchInput from '../components/SearchInput';
 import Header from '../components/Header';
-import CompanyInfos from '../components/CompanyInfos';
+import CompanyCards from '../components/CompanyCards';
 
 import { getToken } from '../services/Auth';
 import { queryCompany, queryEarnings, queryHistoric } from '../api/Querys';
 import { queryCompare } from '../utils/Functions';
-
-const list = [{
-    symbol: 'AAPL',
-    price: '154,30',
-},
-{
-    symbol: 'SBUX',
-    price: '117,19'
-},
-{
-    symbol: 'DOW J',
-    price: '35.369,09'
-},
-{
-    symbol: 'NKE',
-    price: '163,29'
-},
-{
-    symbol: '^BVSP',
-    price: '116.993'
-}]
+import { list } from '../utils/ListData'
 
 export default function GraphScreen({ route, navigation }) {
     const { colors } = useTheme()
@@ -142,32 +122,26 @@ export default function GraphScreen({ route, navigation }) {
                     }]}
                 />
 
-                <ScrollView contentContainerStyle={{
-                    paddingVertical: 0
-                }}>
+                <SearchInput
+                    value={input}
+                    onPress={Search}
+                    placeholder={'Pesquisa'}
+                    colors={colors}
+                    change={(text) => setInput(text)}
+                />
 
-
-                    <SearchInput
-                        value={input}
-                        onPress={Search}
-                        placeholder={'Pesquisa'}
+                {Object.keys(price).length > 0 && Object.keys(gains).length > 0 && Object.keys(historic).length > 0 && Object.keys(compare).length > 0 ?
+                    <CompanyCards
+                        user={user}
                         colors={colors}
-                        change={(text) => setInput(text)}
+                        price={price}
+                        gains={gains}
+                        historic={historic}
+                        compare={compare}
                     />
+                    : null
+                }
 
-                    {Object.keys(price).length > 0 && Object.keys(gains).length > 0 && Object.keys(historic).length > 0 && Object.keys(compare).length > 0 ?
-                        <CompanyInfos
-                            user={user}
-                            colors={colors}
-                            price={price}
-                            gains={gains}
-                            historic={historic}
-                            compare={compare}
-                        />
-                        : null
-                    }
-
-                </ScrollView>
 
             </View>
         </View >
