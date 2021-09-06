@@ -7,8 +7,9 @@ export async function queryCompany(input) {
         fetch(url).then(resp => {
             return resp.json()
         }).then((json) => {
-            if (json["Global Quote"]) resolve(json)
-            else reject({ status: 'error', error: error })
+            if (Object.keys(json).includes('Note'))
+                reject({ status: 'error', error: error })
+            resolve(json)
         }).catch(error => reject({ status: 'error', error: error }))
     })
 }
@@ -20,8 +21,9 @@ export async function queryEarnings(input) {
         fetch(url).then(resp => {
             return resp.json()
         }).then((json) => {
-            if (json["quarterlyEarnings"] && json["annualEarnings"]) resolve(json)
-            else reject({ status: 'error', error: error })
+            if (Object.keys(json).includes('Note'))
+                reject({ status: 'error', error: error })
+            resolve(json)
         }).catch(error => reject({ status: 'error', error: error }))
     })
 }
@@ -33,8 +35,9 @@ export async function queryHistoric(input) {
         fetch(url).then(resp => {
             return resp.json()
         }).then((json) => {
-            if (json["Monthly Time Series"]) resolve(json)
-            else reject({ status: 'error', error: error })
+            if (Object.keys(json).includes('Note'))
+                reject({ status: 'error', error: error })
+            resolve(json)
         }).catch(error => reject({ status: 'error', error: error }))
     })
 }

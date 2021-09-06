@@ -17,7 +17,7 @@ export default function Header({ text, size, colors, onPress, user }) {
             style={{
                 borderBottomRightRadius: 30,
             }}>
-            <Animatable.View duration={1500} animation="fadeInLeft">
+            <Animatable.View duration={2000} animation="fadeInLeftBig">
                 <View style={{
                     height: 22,
                     width,

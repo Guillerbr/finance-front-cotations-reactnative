@@ -5,9 +5,8 @@ import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 
 export default function SearchInput({ colors, placeholder, value, change, onPress }) {
-
     return (
-        <Animatable.View duration={1500} animation="fadeInRight" style={[styles.container, {
+        <Animatable.View duration={2000} animation="fadeInRightBig" style={[styles.container, {
             backgroundColor: colors.backgroundSearch,
             borderColor: colors.borderSearch,
             elevation: 4

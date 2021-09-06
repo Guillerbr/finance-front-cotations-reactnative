@@ -1,10 +1,11 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import * as Animatable from 'react-native-animatable';
+import { formatToLocale } from '../utils/Functions';
 
 export default function CompanyInfos({ user, colors, price, gains, historic, compare }) {
     return (
-        <Animatable.View duration={1500} animation="fadeInUpBig" >
+        <Animatable.View duration={2000} animation="fadeInUpBig" >
             <View style={styles.column}>
 
                 <View style={[styles.card, {
@@ -16,23 +17,23 @@ export default function CompanyInfos({ user, colors, price, gains, historic, com
 
                     <Text style={[styles.h2, {
                         color: colors.text
-                    }]}>{(price["01. symbol"])}</Text>
+                    }]}>{price["01. symbol"]}</Text>
 
                     <Text style={[styles.h2, {
                         color: colors.text
-                    }]}>Preço: {(parseFloat(price["05. price"])).toFixed(2)}</Text>
+                    }]}>Preço: {'R$' + formatToLocale((parseFloat(price["05. price"])).toFixed(2))}</Text>
 
                     <Text style={[styles.h2, {
                         color: colors.text
-                    }]}>Abertura: {(parseFloat(price["02. open"])).toFixed(2)}</Text>
+                    }]}>Abertura: {'R$' + formatToLocale((parseFloat(price["02. open"])).toFixed(2))}</Text>
 
                     <Text style={[styles.h2, {
                         color: colors.text
-                    }]}>Alta: {(parseFloat(price["03. high"])).toFixed(2)}</Text>
+                    }]}>Alta: {'R$' + formatToLocale((parseFloat(price["03. high"])).toFixed(2))}</Text>
 
                     <Text style={[styles.h2, {
                         color: colors.text
-                    }]}>Baixo: {(parseFloat(price["04. low"])).toFixed(2)}</Text>
+                    }]}>Baixo: {'R$' + formatToLocale((parseFloat(price["04. low"])).toFixed(2))}</Text>
                 </View>
 
                 <View style={[styles.card, {
@@ -78,15 +79,15 @@ export default function CompanyInfos({ user, colors, price, gains, historic, com
 
                     <Text style={[styles.h2, {
                         color: colors.text
-                    }]}>Abertura: {'R$' + (parseFloat(user.money) * (parseFloat(gains["quarterly"]["reportedEPS"]) / 100 + 1)).toFixed(2)}</Text>
+                    }]}>Abertura: {'R$' + formatToLocale((parseFloat(user.money) * (parseFloat(gains["quarterly"]["reportedEPS"]) / 100 + 1)).toFixed(2))}</Text>
 
                     <Text style={[styles.h2, {
                         color: colors.text
-                    }]}>Alta: {'R$' + (parseFloat(user.money) * (parseFloat(gains["annual"]["reportedEPS"]) / 100 + 1)).toFixed(2)} </Text>
+                    }]}>Alta: {'R$' + formatToLocale((parseFloat(user.money) * (parseFloat(gains["annual"]["reportedEPS"]) / 100 + 1)).toFixed(2))} </Text>
 
                     <Text style={[styles.h2, {
                         color: colors.text
-                    }]}>Baixa: {(parseFloat(historic[1][1]["1. open"])).toFixed(2)}</Text>
+                    }]}>Baixa: {'R$' + formatToLocale((parseFloat(historic[1][1]["1. open"])).toFixed(2))}</Text>
 
 
                     <Text style={[styles.h2, {
@@ -98,15 +99,15 @@ export default function CompanyInfos({ user, colors, price, gains, historic, com
 
                     <Text style={[styles.h2, {
                         color: colors.text
-                    }]}>Abertura: {'R$' + (parseFloat(user.money) * (parseFloat(gains["quarterly"]["reportedEPS"]) / 100 + 1)).toFixed(2)}</Text>
+                    }]}>Abertura: {'R$' + formatToLocale((parseFloat(user.money) * (parseFloat(gains["quarterly"]["reportedEPS"]) / 100 + 1)).toFixed(2))}</Text>
 
                     <Text style={[styles.h2, {
                         color: colors.text
-                    }]}>Alta: {'R$' + (parseFloat(user.money) * (parseFloat(gains["annual"]["reportedEPS"]) / 100 + 1)).toFixed(2)} </Text>
+                    }]}>Alta: {'R$' + formatToLocale((parseFloat(user.money) * (parseFloat(gains["annual"]["reportedEPS"]) / 100 + 1)).toFixed(2))} </Text>
 
                     <Text style={[styles.h2, {
                         color: colors.text
-                    }]}>Baixa: {(parseFloat(historic[1][1]["1. open"])).toFixed(2)}</Text>
+                    }]}>Baixa: {'R$' + formatToLocale((parseFloat(historic[1][1]["1. open"])).toFixed(2))}</Text>
                 </View>
 
                 <View style={[styles.card, {
@@ -145,19 +146,18 @@ export default function CompanyInfos({ user, colors, price, gains, historic, com
 
                     <Text style={[styles.h2, {
                         color: colors.text
-                    }]}>Trimestrais: {'R$' + (parseFloat(user.money) * (parseFloat(gains["quarterly"]["reportedEPS"]) / 100 + 1)).toFixed(2)}</Text>
+                    }]}>Trimestrais: {'R$' + formatToLocale((parseFloat(user.money) * (parseFloat(gains["quarterly"]["reportedEPS"]) / 100 + 1)).toFixed(2))}</Text>
 
                     <Text style={[styles.h2, {
                         color: colors.text
-                    }]}>Semestrais: {'R$' + (parseFloat(user.money) * (parseFloat(gains["quarterly"]["reportedEPS"]) * 2 / 100 + 1)).toFixed(2)}</Text>
+                    }]}>Semestrais: {'R$' + formatToLocale((parseFloat(user.money) * (parseFloat(gains["quarterly"]["reportedEPS"]) * 2 / 100 + 1)).toFixed(2))}</Text>
 
                     <Text style={[styles.h2, {
                         color: colors.text
-                    }]}>Anuais: {'R$' + (parseFloat(user.money) * (parseFloat(gains["annual"]["reportedEPS"]) / 100 + 1)).toFixed(2)} </Text>
+                    }]}>Anuais: {'R$' + formatToLocale((parseFloat(user.money) * (parseFloat(gains["annual"]["reportedEPS"]) / 100 + 1)).toFixed(2))} </Text>
                 </View>
 
             </View>
-
         </Animatable.View>
     )
 }

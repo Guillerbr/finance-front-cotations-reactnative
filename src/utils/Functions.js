@@ -7,3 +7,9 @@ export function queryCompare(input, list) {
     }
     return data
 }
+
+export function formatToLocale(value) {
+    let formated = value.split('').reverse().join('').replace('.', ',').split('').reverse().join('')
+    return formated
+}
+

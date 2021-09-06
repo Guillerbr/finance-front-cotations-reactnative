@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, useWindowDimensions, StyleSheet, Keyboard, Alert, Modal, ActivityIndicator } from 'react-native';
+import { View, useWindowDimensions, StyleSheet, Keyboard, Alert, Modal, ScrollView, ActivityIndicator } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
@@ -87,7 +87,14 @@ export default function GraphScreen({ route, navigation }) {
 
     const Search = async () => {
         Keyboard.dismiss()
-        if (loading) {
+
+        if (!input) {
+            setPrice({})
+            setGains({})
+            setHistoric({})
+            setCompare({})
+        }
+        else if (loading) {
             setLoading(false)
             LoadingData()
         }
@@ -122,9 +129,10 @@ export default function GraphScreen({ route, navigation }) {
                 colors={colors}
             />
 
-            <View style={[styles.body, {
-                backgroundColor: colors.primary
-            }]}>
+            <View
+                style={[styles.body, {
+                    backgroundColor: colors.primary,
+                }]}>
                 <View
                     style={[StyleSheet.absoluteFillObject, {
                         backgroundColor: colors.background,
@@ -133,28 +141,34 @@ export default function GraphScreen({ route, navigation }) {
                         borderTopLeftRadius: 30
                     }]}
                 />
+                <ScrollView contentContainerStyle={{
+                    paddingVertical: 0
+                }}>
 
-                <SearchInput
-                    value={input}
-                    onPress={Search}
-                    placeholder={'Pesquisa'}
-                    colors={colors}
-                    change={(text) => setInput(text)}
-                />
 
-                {Object.keys(price).length > 0 && Object.keys(gains).length > 0 && Object.keys(historic).length > 0 && Object.keys(compare).length > 0 ?
-                    <CompanyInfos
-                        user={user}
+                    <SearchInput
+                        value={input}
+                        onPress={Search}
+                        placeholder={'Pesquisa'}
                         colors={colors}
-                        price={price}
-                        gains={gains}
-                        historic={historic}
-                        compare={compare}
+                        change={(text) => setInput(text)}
                     />
-                    : null
-                }
-            </View>
 
+                    {Object.keys(price).length > 0 && Object.keys(gains).length > 0 && Object.keys(historic).length > 0 && Object.keys(compare).length > 0 ?
+                        <CompanyInfos
+                            user={user}
+                            colors={colors}
+                            price={price}
+                            gains={gains}
+                            historic={historic}
+                            compare={compare}
+                        />
+                        : null
+                    }
+
+                </ScrollView>
+
+            </View>
         </View >
     )
 }

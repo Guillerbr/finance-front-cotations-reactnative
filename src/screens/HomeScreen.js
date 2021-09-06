@@ -94,12 +94,13 @@ export default function HomeScreen({ navigation }) {
                 source={{ uri: imagemUrl }}
                 style={StyleSheet.absoluteFillObject}
             />
-            <Animatable.View animation="fadeInLeftBig"
+            <Animatable.View duration={2000} animation="fadeInLeftBig"
                 style={styles.header}>
                 <Text style={styles.textHeader}>Bem-vindo!</Text>
             </Animatable.View>
 
             <Animatable.View
+                duration={2000}
                 animation="fadeInUpBig"
                 style={[styles.footer, {
                     backgroundColor: colors.background
