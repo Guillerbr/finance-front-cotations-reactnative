@@ -15,11 +15,11 @@ export default function Card({ colors, text, onPress }) {
 
 const styles = StyleSheet.create({
     card: {
-        width: '48%',
+        width: '47%',
         elevation: 5,
-        padding: 15,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        height: 60
     },
     text: {
         fontSize: 14,

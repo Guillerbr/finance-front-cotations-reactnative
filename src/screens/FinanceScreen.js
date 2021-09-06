@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, useWindowDimensions, StyleSheet, Keyboard, Alert, Modal, ScrollView, ActivityIndicator } from 'react-native';
+import { View, useWindowDimensions, StyleSheet, Keyboard, Alert, Modal, ActivityIndicator } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';

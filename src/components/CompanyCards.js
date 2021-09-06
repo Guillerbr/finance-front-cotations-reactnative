@@ -7,14 +7,8 @@ import { queryHistoric, queryLastRefreshed } from '../api/Querys';
 
 export default function CompanyCards({ colors, company, navigation, input }) {
     const [showModal, setShowModal] = useState(false)
-    const [mode, setMode] = useState('date');
+    const [mode, setMode] = useState('date')
     const [date, setDate] = useState(new Date(1598051730000))
-
-    const onChangeDate = (event, selectedDate) => {
-        const currentDate = selectedDate || date
-        setShowModal(Platform.OS === 'ios')
-        setDate(currentDate)
-    }
 
     const currentPrice = useCallback(async () => {
         try {
@@ -41,19 +35,24 @@ export default function CompanyCards({ colors, company, navigation, input }) {
         } catch (error) {
             Alert.alert('Alerta', 'Aguarde alguns segundos e tente novamente')
         }
-    }, [])
+    }, [company])
+
+    const comparePrice = useCallback(async () => {
+        navigation.navigate('DetailsScreen', {
+            id: 'comparePrice',
+            colors,
+            company,
+        })
+    }, [company])
 
     const gainsPrice = useCallback(async () => {
         setShowModal(true)
-    }, [])
+    }, [company])
 
-    const comparePrice = useCallback(async () => {
-
-    }, [])
-
-    async function LoadingData() {
-
-        setLoading(true)
+    const onChangeDate = (event, selectedDate) => {
+        const currentDate = selectedDate || date
+        setShowModal(Platform.OS === 'ios')
+        setDate(currentDate)
     }
 
     return (
@@ -87,7 +86,7 @@ const styles = StyleSheet.create({
     column: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: '4%',
+        paddingHorizontal: '5%',
         paddingTop: '1%',
         paddingBottom: '4%'
     },
