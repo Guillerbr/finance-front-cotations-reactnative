@@ -15,7 +15,7 @@ export default function GraphScreen({ route, navigation }) {
     const { width, height } = useWindowDimensions()
 
     const [user, setUser] = useState({})
-    const [data, setData] = useState({})
+    const [price, setPrice] = useState({})
     const [gains, setGains] = useState({})
     const [input, setInput] = useState('')
 
@@ -40,9 +40,9 @@ export default function GraphScreen({ route, navigation }) {
         Keyboard.dismiss()
 
         queryCompany(input).then(res => {
-            setData(Object.values(res["Time Series (Daily)"])[0])
+            setPrice(res["Global Quote"])
         }).catch(e => {
-            setData({})
+            setPrice({})
             console.log(e)
         })
 
@@ -56,7 +56,7 @@ export default function GraphScreen({ route, navigation }) {
             console.log(e)
         })
     }
-
+    console.log(price)
     return (
         <View style={[styles.container, {
             backgroundColor: colors.background
@@ -89,11 +89,11 @@ export default function GraphScreen({ route, navigation }) {
                     change={(text) => setInput(text)}
                 />
 
-                {Object.keys(data).length > 0 &&
+                {Object.keys(price).length > 0 && Object.keys(gains).length > 0 &&
                     <CompanyDetails
                         user={user}
                         colors={colors}
-                        data={data}
+                        price={price}
                         gains={gains}
                     />
                 }

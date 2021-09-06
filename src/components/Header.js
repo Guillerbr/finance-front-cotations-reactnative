@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, Text, TouchableOpacity, useWindowDimensions, TextInput } from 'react-native';
-import { Entypo, Feather } from '@expo/vector-icons';
+import { MaterialIcons, Feather } from '@expo/vector-icons';
 import LinearGradient from 'react-native-linear-gradient';
 import * as Animatable from 'react-native-animatable';
 
@@ -41,8 +41,8 @@ export default function Header({ text, size, colors, onPress, user }) {
                             left: 10,
                             padding: 10
                         }}>
-                        <Entypo
-                            name="trash"
+                        <MaterialIcons
+                            name="logout"
                             color={'transparent'}
                             size={24}
                         />
@@ -62,8 +62,8 @@ export default function Header({ text, size, colors, onPress, user }) {
                             right: 10,
                             padding: 10
                         }}>
-                        <Entypo
-                            name="trash"
+                        <MaterialIcons
+                            name="logout"
                             color={colors.textHeader}
                             size={24}
                         />

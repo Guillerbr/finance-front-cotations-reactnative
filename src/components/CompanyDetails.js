@@ -2,9 +2,10 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import * as Animatable from 'react-native-animatable';
 
-export default function CompanyDetails({ user, colors, data, gains }) {
+export default function CompanyDetails({ user, colors, price, gains }) {
+
     return (
-        <Animatable.View duration={1500} animation="fadeInUp" style={styles.container}>
+        <Animatable.View duration={1500} animation="fadeInUpBig" style={styles.container}>
             <View style={styles.column}>
 
                 <View style={[styles.card, {
@@ -16,19 +17,19 @@ export default function CompanyDetails({ user, colors, data, gains }) {
 
                     <Text style={[styles.h2, {
                         color: colors.text
-                    }]}>Abertura: {parseFloat(data["1. open"])}</Text>
+                    }]}>Preço: {(parseFloat(price["05. price"])).toFixed(2)}</Text>
 
                     <Text style={[styles.h2, {
                         color: colors.text
-                    }]}>Fechamento: {parseFloat(data["4. close"])}</Text>
+                    }]}>Abertura: {(parseFloat(price["02. open"])).toFixed(2)}</Text>
 
                     <Text style={[styles.h2, {
                         color: colors.text
-                    }]}>Alta: {parseFloat(data["2. high"])}</Text>
+                    }]}>Alta: {(parseFloat(price["03. high"])).toFixed(2)}</Text>
 
                     <Text style={[styles.h2, {
                         color: colors.text
-                    }]}>Baixo: {parseFloat(data["3. low"])}</Text>
+                    }]}>Baixo: {(parseFloat(price["04. low"])).toFixed(2)}</Text>
                 </View>
 
                 <View style={[styles.card, {
@@ -44,7 +45,6 @@ export default function CompanyDetails({ user, colors, data, gains }) {
                 </View>
 
             </View>
-
 
             <View style={styles.column}>
 

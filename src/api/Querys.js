@@ -2,7 +2,7 @@ import { apiKey } from '../utils/Keys';
 
 export async function queryCompany(input) {
     return new Promise(function (resolve, reject) {
-        const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${input}&apikey=${apiKey}`
+        const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${input}&apikey=${apiKey}`
 
         fetch(url).then(resp => {
             return resp.json()

@@ -9,7 +9,8 @@ export default function SearchInput({ colors, placeholder, value, change, onPres
     return (
         <Animatable.View duration={1500} animation="fadeInRight" style={[styles.container, {
             backgroundColor: colors.backgroundSearch,
-            borderColor: colors.borderSearch
+            borderColor: colors.borderSearch,
+            elevation: 4
         }]}>
             <TextInput
                 value={value}
@@ -18,7 +19,7 @@ export default function SearchInput({ colors, placeholder, value, change, onPres
                 placeholder={placeholder}
                 placeholderTextColor={colors.placeholder}
                 style={[styles.searchBar, {
-                    backgroundColor: colors.backgroundSearch,
+                    backgroundColor: 'transparent',
                     color: colors.text,
                 }]}
             />

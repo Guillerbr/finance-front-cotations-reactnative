@@ -17,8 +17,8 @@ const App = () => {
             placeholder: '#777',
             primary: Colors.primary,
             secundary: Colors.secondary,
-            backgroundSearch: '#e1e1e1',
-            borderSearch: '#c1c1c1'
+            backgroundSearch: '#FFF',
+            borderSearch: '#e1e1e1'
         }
     }
 
@@ -32,8 +32,8 @@ const App = () => {
             placeholder: '#a1a1a1',
             primary: Colors.primary,
             secundary: Colors.secondary,
-            backgroundSearch: '#555',
-            borderSearch: '#333'
+            backgroundSearch: '#444',
+            borderSearch: '#444'
         }
     }
 
