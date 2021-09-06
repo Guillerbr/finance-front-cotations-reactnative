@@ -47,20 +47,27 @@ export default function GraphScreen({ route, navigation }) {
         })
 
         queryEarnings(input).then(res => {
-            setGains(res)
+            setGains({
+                quarterly: Object.values(res["quarterlyEarnings"])[0],
+                annual: Object.values(res["annualEarnings"])[0]
+            })
         }).catch(e => {
+            setGains({})
             console.log(e)
         })
     }
-
-    console.log(gains)
 
     return (
         <View style={[styles.container, {
             backgroundColor: colors.background
         }]}>
 
-            <Header onPress={resetPress} user={user} text={'Finanças'} colors={colors} />
+            <Header
+                onPress={resetPress}
+                user={user}
+                text={'Finanças'}
+                colors={colors}
+            />
 
             <View style={[styles.body, {
                 backgroundColor: colors.primary
@@ -84,8 +91,10 @@ export default function GraphScreen({ route, navigation }) {
 
                 {Object.keys(data).length > 0 &&
                     <CompanyDetails
+                        user={user}
                         colors={colors}
                         data={data}
+                        gains={gains}
                     />
                 }
 
