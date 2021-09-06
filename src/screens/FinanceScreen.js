@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { View, useWindowDimensions, StyleSheet, Keyboard, Alert } from 'react-native';
+import { View, useWindowDimensions, StyleSheet, Keyboard, Alert, Modal, ActivityIndicator } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LinearGradient from 'react-native-linear-gradient';
 
 import SearchInput from '../components/SearchInput';
 import Header from '../components/Header';
+import CompanyInfos from '../components/CompanyInfos';
 
 import { getToken } from '../services/Auth';
 import { queryCompany, queryEarnings, queryHistoric } from '../api/Querys';
-import CompanyInfos from '../components/CompanyInfos';
 
 const actions = [{
     symbol: 'AAPL',
@@ -40,7 +41,7 @@ export default function GraphScreen({ route, navigation }) {
     const [historic, setHistoric] = useState({})
     const [compare, setCompare] = useState({})
 
-    const [loading, setLoaidng] = useState(true)
+    const [loading, setLoading] = useState(true)
     const [user, setUser] = useState({})
     const [input, setInput] = useState('')
 
@@ -61,49 +62,42 @@ export default function GraphScreen({ route, navigation }) {
         })
     }
 
+    async function LoadingData() {
+        try {
+            const company = await queryCompany(input.trim())
+
+            const earnings = await queryEarnings(input.trim())
+
+            const historic = await queryHistoric(input.trim())
+
+            setPrice(company["Global Quote"])
+            setGains({
+                quarterly: Object.values(earnings["quarterlyEarnings"])[0],
+                annual: Object.values(earnings["annualEarnings"])[0]
+            })
+            setHistoric(Object.entries(historic["Monthly Time Series"]))
+
+            let data = []
+            for (let i = 0; i < 4; i++) {
+                if (input.toUpperCase().trim() === actions[i].symbol.toUpperCase()) data.push(actions[4])
+                else data.push(actions[i])
+            }
+
+            setCompare(data)
+
+        } catch (error) {
+            Alert.alert('Alerta', 'Aguarde alguns segundos e tente novamente')
+
+        }
+
+        setLoading(true)
+    }
+
     const Search = async () => {
         Keyboard.dismiss()
-
         if (loading) {
-
-            try {
-                let company = await queryCompany(input.trim())
-                setPrice(company["Global Quote"] || 'undefined')
-
-            } catch (error) {
-                Alert.alert('Alerta', 'Aguarde alguns segundos e tente novamente')
-            }
-
-            try {
-                let Earnings = await queryEarnings(input.trim())
-                setGains({
-                    quarterly: Object.values(Earnings["quarterlyEarnings"])[0] || 'undefined',
-                    annual: Object.values(Earnings["annualEarnings"])[0] || 'undefined'
-                })
-            } catch (error) {
-                Alert.alert('Alerta', 'Aguarde alguns segundos e tente novamente')
-            }
-
-            try {
-                let Historic = await queryHistoric(input.trim())
-
-                setHistoric(Object.entries(Historic["Monthly Time Series"]) || 'undefined')
-
-            } catch (error) {
-                Alert.alert('Alerta', 'Aguarde alguns segundos e tente novamente')
-            }
-
-            try {
-                let data = []
-                for (let i = 0; i < 4; i++) {
-                    if (input.toUpperCase().trim() === actions[i].symbol.toUpperCase()) data.push(actions[4])
-                    else data.push(actions[i])
-                }
-
-                setCompare(data)
-            } catch (error) {
-                Alert.alert('Alerta', 'Aguarde alguns segundos e tente novamente')
-            }
+            setLoading(false)
+            LoadingData()
         }
     }
 
@@ -111,6 +105,23 @@ export default function GraphScreen({ route, navigation }) {
         <View style={[styles.container, {
             backgroundColor: colors.background
         }]}>
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={!loading}>
+                <View style={styles.mod}>
+                    <LinearGradient
+                        colors={[colors.primary, colors.secundary]}
+                        start={{ x: 0, y: 0 }} end={{ x: 1.5, y: 0 }}
+                        style={styles.indicator}>
+                        <ActivityIndicator
+                            size={'large'}
+                            color={'white'}
+                        />
+                    </LinearGradient>
+                </View>
+            </Modal>
 
             <Header
                 onPress={resetPress}
@@ -152,7 +163,7 @@ export default function GraphScreen({ route, navigation }) {
                 }
             </View>
 
-        </View>
+        </View >
     )
 }
 
@@ -164,4 +175,13 @@ const styles = StyleSheet.create({
         flex: 1,
         borderTopLeftRadius: 0,
     },
+    mod: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    indicator: {
+        padding: 30,
+        borderRadius: 20
+    }
 })
