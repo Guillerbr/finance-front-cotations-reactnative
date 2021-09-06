@@ -89,7 +89,6 @@ export default function CompanyInfos({ user, colors, price, gains, historic, com
                         color: colors.text
                     }]}>Baixa: {'R$' + formatToLocale((parseFloat(historic[1][1]["1. open"])).toFixed(2))}</Text>
 
-
                     <Text style={[styles.h2, {
                         color: colors.text,
                         fontWeight: 'bold',

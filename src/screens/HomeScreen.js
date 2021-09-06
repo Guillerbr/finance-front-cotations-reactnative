@@ -6,7 +6,7 @@ import { TextInputMask } from 'react-native-masked-text'
 import { Feather, FontAwesome, Entypo } from '@expo/vector-icons';
 import { useTheme } from 'react-native-paper';
 import useStateWithCallback from '../hooks/useStateWithCallback';
-import { imagemUrl } from '../utils/Keys';
+import { imageUrl } from '../utils/Keys';
 import { setToken } from '../services/Auth';
 
 export default function HomeScreen({ navigation }) {
@@ -91,7 +91,7 @@ export default function HomeScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <Image
-                source={{ uri: imagemUrl }}
+                source={{ uri: imageUrl }}
                 style={StyleSheet.absoluteFillObject}
             />
             <Animatable.View duration={2000} animation="fadeInLeftBig"

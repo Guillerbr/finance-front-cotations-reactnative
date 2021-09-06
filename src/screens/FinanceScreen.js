@@ -129,10 +129,10 @@ export default function GraphScreen({ route, navigation }) {
                 colors={colors}
             />
 
-            <View
-                style={[styles.body, {
-                    backgroundColor: colors.primary,
-                }]}>
+            <View style={[styles.body, {
+                backgroundColor: colors.primary,
+            }]}>
+
                 <View
                     style={[StyleSheet.absoluteFillObject, {
                         backgroundColor: colors.background,
@@ -141,6 +141,7 @@ export default function GraphScreen({ route, navigation }) {
                         borderTopLeftRadius: 30
                     }]}
                 />
+
                 <ScrollView contentContainerStyle={{
                     paddingVertical: 0
                 }}>
