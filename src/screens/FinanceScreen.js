@@ -10,8 +10,9 @@ import CompanyInfos from '../components/CompanyInfos';
 
 import { getToken } from '../services/Auth';
 import { queryCompany, queryEarnings, queryHistoric } from '../api/Querys';
+import { queryCompare } from '../utils/Functions';
 
-const actions = [{
+const list = [{
     symbol: 'AAPL',
     price: '154,30',
 },
@@ -65,9 +66,7 @@ export default function GraphScreen({ route, navigation }) {
     async function LoadingData() {
         try {
             const company = await queryCompany(input.trim())
-
             const earnings = await queryEarnings(input.trim())
-
             const historic = await queryHistoric(input.trim())
 
             setPrice(company["Global Quote"])
@@ -76,14 +75,7 @@ export default function GraphScreen({ route, navigation }) {
                 annual: Object.values(earnings["annualEarnings"])[0]
             })
             setHistoric(Object.entries(historic["Monthly Time Series"]))
-
-            let data = []
-            for (let i = 0; i < 4; i++) {
-                if (input.toUpperCase().trim() === actions[i].symbol.toUpperCase()) data.push(actions[4])
-                else data.push(actions[i])
-            }
-
-            setCompare(data)
+            setCompare(queryCompare(input, list))
 
         } catch (error) {
             Alert.alert('Alerta', 'Aguarde alguns segundos e tente novamente')
