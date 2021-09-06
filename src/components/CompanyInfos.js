@@ -2,10 +2,9 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import * as Animatable from 'react-native-animatable';
 
-export default function CompanyDetails({ user, colors, price, gains }) {
-
+export default function CompanyInfos({ user, colors, price, gains, historic, compare }) {
     return (
-        <Animatable.View duration={1500} animation="fadeInUpBig" style={styles.container}>
+        <Animatable.View duration={1500} animation="fadeInUpBig" >
             <View style={styles.column}>
 
                 <View style={[styles.card, {
@@ -14,6 +13,10 @@ export default function CompanyDetails({ user, colors, price, gains }) {
                     <Text style={[styles.h1, {
                         color: colors.text
                     }]}>Preço Atual</Text>
+
+                    <Text style={[styles.h2, {
+                        color: colors.text
+                    }]}>{(price["01. symbol"])}</Text>
 
                     <Text style={[styles.h2, {
                         color: colors.text
@@ -37,13 +40,24 @@ export default function CompanyDetails({ user, colors, price, gains }) {
                 }]}>
                     <Text style={[styles.h1, {
                         color: colors.text
-                    }]}>Preço Historico</Text>
+                    }]}>Preço atual em comparação</Text>
 
                     <Text style={[styles.h2, {
                         color: colors.text
-                    }]}>Preço Atual</Text>
-                </View>
+                    }]}>{compare[0].symbol + ' - R$' + compare[0].price}</Text>
 
+                    <Text style={[styles.h2, {
+                        color: colors.text
+                    }]}>{compare[1].symbol + ' - R$' + compare[1].price}</Text>
+
+                    <Text style={[styles.h2, {
+                        color: colors.text
+                    }]}>{compare[2].symbol + ' - R$' + compare[2].price}</Text>
+
+                    <Text style={[styles.h2, {
+                        color: colors.text
+                    }]}>{compare[3].symbol + ' - R$' + compare[3].price}</Text>
+                </View>
             </View>
 
             <View style={styles.column}>
@@ -53,12 +67,46 @@ export default function CompanyDetails({ user, colors, price, gains }) {
                 }]}>
                     <Text style={[styles.h1, {
                         color: colors.text
-                    }]}>Preço atual em comparação</Text>
+                    }]}>Preço Historico</Text>
 
+                    <Text style={[styles.h2, {
+                        color: colors.text,
+                        fontWeight: 'bold',
+                        textAlign: 'center',
+                        margin: 5
+                    }]}>6 Meses</Text>
 
                     <Text style={[styles.h2, {
                         color: colors.text
-                    }]}>Preço Atual</Text>
+                    }]}>Abertura: {'R$' + (parseFloat(user.money) * (parseFloat(gains["quarterly"]["reportedEPS"]) / 100 + 1)).toFixed(2)}</Text>
+
+                    <Text style={[styles.h2, {
+                        color: colors.text
+                    }]}>Alta: {'R$' + (parseFloat(user.money) * (parseFloat(gains["annual"]["reportedEPS"]) / 100 + 1)).toFixed(2)} </Text>
+
+                    <Text style={[styles.h2, {
+                        color: colors.text
+                    }]}>Baixa: {(parseFloat(historic[1][1]["1. open"])).toFixed(2)}</Text>
+
+
+                    <Text style={[styles.h2, {
+                        color: colors.text,
+                        fontWeight: 'bold',
+                        textAlign: 'center',
+                        margin: 5
+                    }]}>1 Ano</Text>
+
+                    <Text style={[styles.h2, {
+                        color: colors.text
+                    }]}>Abertura: {'R$' + (parseFloat(user.money) * (parseFloat(gains["quarterly"]["reportedEPS"]) / 100 + 1)).toFixed(2)}</Text>
+
+                    <Text style={[styles.h2, {
+                        color: colors.text
+                    }]}>Alta: {'R$' + (parseFloat(user.money) * (parseFloat(gains["annual"]["reportedEPS"]) / 100 + 1)).toFixed(2)} </Text>
+
+                    <Text style={[styles.h2, {
+                        color: colors.text
+                    }]}>Baixa: {(parseFloat(historic[1][1]["1. open"])).toFixed(2)}</Text>
                 </View>
 
                 <View style={[styles.card, {
@@ -79,6 +127,11 @@ export default function CompanyDetails({ user, colors, price, gains }) {
                         color: colors.text
                     }]}>Trimestrais: {parseFloat(gains["quarterly"]["reportedEPS"])}%</Text>
 
+
+                    <Text style={[styles.h2, {
+                        color: colors.text
+                    }]}>Semestrais: {parseFloat(gains["quarterly"]["reportedEPS"]) * 2}%</Text>
+
                     <Text style={[styles.h2, {
                         color: colors.text
                     }]}>Anuais: {parseFloat(gains["annual"]["reportedEPS"])}% </Text>
@@ -96,8 +149,11 @@ export default function CompanyDetails({ user, colors, price, gains }) {
 
                     <Text style={[styles.h2, {
                         color: colors.text
-                    }]}>Anuais: {'R$' + (parseFloat(user.money) * (parseFloat(gains["annual"]["reportedEPS"]) / 100 + 1)).toFixed(2)} </Text>
+                    }]}>Semestrais: {'R$' + (parseFloat(user.money) * (parseFloat(gains["quarterly"]["reportedEPS"]) * 2 / 100 + 1)).toFixed(2)}</Text>
 
+                    <Text style={[styles.h2, {
+                        color: colors.text
+                    }]}>Anuais: {'R$' + (parseFloat(user.money) * (parseFloat(gains["annual"]["reportedEPS"]) / 100 + 1)).toFixed(2)} </Text>
                 </View>
 
             </View>
@@ -107,18 +163,15 @@ export default function CompanyDetails({ user, colors, price, gains }) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
     column: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: '5%',
+        paddingHorizontal: '4%',
         paddingTop: '1%',
         paddingBottom: '4%'
     },
     card: {
-        width: '47%',
+        width: '48%',
         elevation: 5,
         padding: 10
     },

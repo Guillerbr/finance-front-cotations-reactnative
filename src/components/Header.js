@@ -110,7 +110,7 @@ export default function Header({ text, size, colors, onPress, user }) {
                             }}
                             secureTextEntry={secureTextEntry}
                             editable={false}
-                            value={user.money ? 'R$' + user.money.toString() : ''}
+                            value={user.money ? 'R$' + user.money.toFixed(2).toString() : ''}
                         />
 
                         <TouchableOpacity
