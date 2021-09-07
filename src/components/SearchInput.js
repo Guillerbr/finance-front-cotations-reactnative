@@ -2,7 +2,7 @@ import React from 'react'
 import { TouchableOpacity, StyleSheet, TextInput } from 'react-native'
 import { EvilIcons } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
-import LinearGradient from 'react-native-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function SearchInput({ colors, placeholder, value, change, onPress }) {
     return (

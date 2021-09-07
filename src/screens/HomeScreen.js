@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Platform, TextInput, ActivityIndicator, Image, Alert } from 'react-native'
 import * as Animatable from 'react-native-animatable';
-import LinearGradient from 'react-native-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import { TextInputMask } from 'react-native-masked-text'
 import { Feather, FontAwesome, Entypo } from '@expo/vector-icons';
 import { useTheme } from 'react-native-paper';

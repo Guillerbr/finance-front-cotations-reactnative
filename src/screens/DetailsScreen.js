@@ -2,13 +2,20 @@ import React from 'react';
 import { View, FlatList } from 'react-native';
 
 import TextDetails from '../components/TextDetails';
-import renderSeparator from '../components/renderSeparator';
-
 import { formatToLocale } from '../utils/Functions';
 import { list } from '../utils/ListData';
 
 export default function DetailsScreen({ route }) {
+
     const detailsProps = route.params
+
+    const renderSeparator = () => (
+        <View style={{
+            backgroundColor: detailsProps.colors.primary,
+            height: 2,
+            marginVertical: 10
+        }} />
+    )
 
     return (
         <View style={{
@@ -34,9 +41,9 @@ export default function DetailsScreen({ route }) {
                 :
                 detailsProps.id == 'historicPrice' ?
                     <FlatList
-                        data={[]}
+                        data={detailsProps.historic}
                         keyExtractor={(item, index) => index.toString()}
-                        ItemSeparatorComponent={renderSeparator(detailsProps.colors)}
+                        ItemSeparatorComponent={renderSeparator}
                         contentContainerStyle={{
                             padding: 15,
                             paddingTop: 0,
@@ -44,7 +51,11 @@ export default function DetailsScreen({ route }) {
                         renderItem={({ item, index }) => {
                             return (
                                 <View>
-
+                                    <TextDetails colors={detailsProps.colors} text={item.date} />
+                                    <TextDetails colors={detailsProps.colors} text={'Abertura: R$' + formatToLocale(item.open)} />
+                                    <TextDetails colors={detailsProps.colors} text={'Fechamento: R$' + formatToLocale(item.close)} />
+                                    <TextDetails colors={detailsProps.colors} text={'Alto: R$' + formatToLocale(item.high)} />
+                                    <TextDetails colors={detailsProps.colors} text={'Baixo: R$' + formatToLocale(item.low)} />
                                 </View>
                             )
                         }}

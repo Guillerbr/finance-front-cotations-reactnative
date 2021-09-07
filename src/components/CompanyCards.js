@@ -1,14 +1,29 @@
 import React, { useState, useCallback } from 'react'
-import { View, Platform, StyleSheet, Alert } from 'react-native'
+import { View, StyleSheet, Alert, Modal, ActivityIndicator } from 'react-native'
 import * as Animatable from 'react-native-animatable';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { LinearGradient } from 'expo-linear-gradient';
+import moment from 'moment';
+
 import Card from './Card';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { queryHistoric, queryLastRefreshed } from '../api/Querys';
+import ButtonDate from './ButtonDate';
+
+import { queryLastRefreshed } from '../api/Querys';
+import { catchHistoricPrice } from '../utils/Functions';
 
 export default function CompanyCards({ colors, company, navigation, input }) {
+
+    const date = new Date()
+
     const [showModal, setShowModal] = useState(false)
-    const [mode, setMode] = useState('date')
-    const [date, setDate] = useState(new Date(1598051730000))
+    const [showModalDate, setShowModalDate] = useState(false)
+
+    const [loading, setLoading] = useState(false)
+    const [index, setIndex] = useState('')
+    const [whoIsModal, setWhoIsModal] = useState('')
+
+    const [startDate, setStartDate] = useState('')
+    const [endDate, setEndDate] = useState('')
 
     const currentPrice = useCallback(async () => {
         try {
@@ -24,18 +39,13 @@ export default function CompanyCards({ colors, company, navigation, input }) {
         }
     }, [company])
 
-    const historicPrice = useCallback(async () => {
-        try {
-            const historic = await queryHistoric(input.trim())
-            navigation.navigate('DetailsScreen', {
-                id: 'historicPrice',
-                historic,
-                colors,
-            })
-        } catch (error) {
-            Alert.alert('Alerta', 'Aguarde alguns segundos e tente novamente')
+    const historicPrice = useCallback(() => {
+        if (!showModal) {
+            setShowModal(true)
+            setWhoIsModal('historic')
         }
-    }, [company])
+    }, [company, showModal])
+
 
     const comparePrice = useCallback(async () => {
         navigation.navigate('DetailsScreen', {
@@ -45,29 +55,128 @@ export default function CompanyCards({ colors, company, navigation, input }) {
         })
     }, [company])
 
-    const gainsPrice = useCallback(async () => {
-        setShowModal(true)
+    const gainsPrice = useCallback(() => {
+        if (!showModal) {
+            setShowModal(true)
+            setWhoIsModal('gains')
+        }
     }, [company])
 
-    const onChangeDate = (event, selectedDate) => {
-        const currentDate = selectedDate || date
-        setShowModal(Platform.OS === 'ios')
-        setDate(currentDate)
+    const confirmDate = useCallback((selectedDate) => {
+        setShowModalDate(false)
+        if (index === 'end') {
+            if (startDate) {
+                if (moment(selectedDate).isAfter(moment(startDate))) {
+                    setEndDate(moment.utc(selectedDate).format('YYYY-MM-DD'))
+                }
+                else {
+                    Alert.alert('Aviso', 'Data de fim, precisa ser após de início')
+                }
+            } else setEndDate(moment.utc(selectedDate).format('YYYY-MM-DD'))
+        } else {
+            if (endDate) {
+                if (moment(selectedDate).isBefore(moment(endDate))) {
+                    setStartDate(moment.utc(selectedDate).format('YYYY-MM-DD'))
+                } else {
+                    Alert.alert('Aviso', 'Data de início, precisa ser antes do fim')
+                }
+            } else setStartDate(moment.utc(selectedDate).format('YYYY-MM-DD'))
+        }
+    }, [index, startDate, endDate])
+
+    const openDatePicker = (index) => {
+        setShowModalDate(true)
+        setIndex(index)
     }
+
+    const datesCheck = () => {
+        if (startDate && endDate) {
+            if (startDate !== endDate) {
+                return true
+            } else {
+                Alert.alert('Aviso', 'Selecione começo e fim diferentes para continuar')
+                return false
+            }
+        }
+        return false
+    }
+
+    const goTo = async () => {
+        if (datesCheck()) {
+            setLoading(true)
+            if (whoIsModal === 'historic') {
+                await catchHistoricPrice(input, startDate, endDate, navigation, colors)
+                clearStates()
+            } else if (whoIsModal === 'gains') {
+                clearStates()
+            }
+        }
+    }
+
+    const clearStates = useCallback(() => {
+        setShowModal(false)
+        setLoading(false)
+        setIndex('')
+        setWhoIsModal('')
+        setStartDate('')
+        setEndDate('')
+    }, [])
 
     return (
         <Animatable.View duration={2000} animation="fadeInUpBig" >
-            {showModal ?
-                <DateTimePicker
-                    testID="dateTimePicker"
-                    value={date}
-                    mode={mode}
-                    is24Hour={true}
-                    display="default"
-                    onChange={onChangeDate}
-                />
-                : null
-            }
+
+            <Modal
+                onRequestClose={() => setShowModal(false)}
+                visible={showModal}
+                transparent={true}
+                animationType={'fade'}>
+                <View style={styles.mod}>
+
+                    <LinearGradient
+                        colors={[colors.primary, colors.secundary]}
+                        start={{ x: 0, y: 0 }} end={{ x: 1.5, y: 0 }}
+                        style={styles.viewDate}>
+
+                        {loading ?
+                            <ActivityIndicator
+                                size={26}
+                                color={colors.text}
+                            />
+                            :
+                            <>
+                                <ButtonDate
+                                    onPress={() => openDatePicker('start')}
+                                    colors={colors}
+                                    icon={'date'}
+                                    text={startDate || 'Início'}
+                                />
+                                <ButtonDate
+                                    onPress={() => openDatePicker('end')}
+                                    colors={colors}
+                                    icon={'date'}
+                                    text={endDate || 'Fim'}
+                                />
+
+                                <View style={styles.viewButtons}>
+
+                                    <ButtonDate
+                                        onPress={clearStates}
+                                        colors={colors}
+                                        text={'Fechar'}
+                                    />
+                                    <ButtonDate
+                                        onPress={goTo}
+                                        colors={colors}
+                                        text={'Confirmar'}
+                                    />
+                                </View>
+                            </>
+                        }
+                    </LinearGradient>
+
+                </View>
+            </Modal>
+
 
             <View style={styles.column}>
                 <Card onPress={currentPrice} text={'Preço atual'} colors={colors} />
@@ -78,6 +187,14 @@ export default function CompanyCards({ colors, company, navigation, input }) {
                 <Card onPress={comparePrice} text={'Preço atual em comparação'} colors={colors} />
                 <Card onPress={gainsPrice} text={'Projeção de ganhos'} colors={colors} />
             </View>
+
+
+            <DateTimePickerModal
+                isVisible={showModalDate}
+                mode="date"
+                onConfirm={confirmDate}
+                onCancel={() => setShowModalDate(false)}
+            />
         </Animatable.View>
     )
 }
@@ -89,5 +206,20 @@ const styles = StyleSheet.create({
         paddingHorizontal: '5%',
         paddingTop: '1%',
         paddingBottom: '4%'
+    },
+    mod: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    viewButtons: {
+        flexDirection: 'row'
+    },
+    viewDate: {
+        paddingHorizontal: 30,
+        paddingVertical: 20,
+        borderRadius: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 })

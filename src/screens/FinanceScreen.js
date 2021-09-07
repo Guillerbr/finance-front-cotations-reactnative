@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, useWindowDimensions, StyleSheet, Keyboard, Alert, Modal, ActivityIndicator } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import LinearGradient from 'react-native-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import SearchInput from '../components/SearchInput';
 import Header from '../components/Header';
@@ -11,7 +11,7 @@ import CompanyCards from '../components/CompanyCards';
 import { getToken } from '../services/Auth';
 import { queryCompany } from '../api/Querys';
 
-export default function GraphScreen({ navigation }) {
+export default function FinanceScreen({ navigation }) {
     const { colors } = useTheme()
     const { width, height } = useWindowDimensions()
 
@@ -59,7 +59,6 @@ export default function GraphScreen({ navigation }) {
             LoadingData()
         }
     }
-
     return (
         <View style={[styles.container, {
             backgroundColor: colors.background

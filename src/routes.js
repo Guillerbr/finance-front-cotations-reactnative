@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar, useColorScheme } from 'react-native';
+import { StatusBar, useColorScheme, LogBox } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 
@@ -32,6 +32,10 @@ const Routes = () => {
     const scheme = useColorScheme()
     const [isLoading, setIsLoading] = useState(true)
     const [token, setToken] = useState(false)
+
+    useEffect(() => {
+        LogBox.ignoreLogs(['Require cycle:'])
+    }, [])
 
     useEffect(() => {
         async function initialVerifications() {
