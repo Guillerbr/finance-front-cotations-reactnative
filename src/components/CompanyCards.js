@@ -62,7 +62,6 @@ export default function CompanyCards({ user, colors, company, navigation, input 
     }, [company, showModal])
 
     const confirmDate = useCallback((selectedDate) => {
-        console.log(selectedDate)
         if (index === 'end') {
             if (startDate) {
                 if (moment(selectedDate).isAfter(moment(startDate))) {

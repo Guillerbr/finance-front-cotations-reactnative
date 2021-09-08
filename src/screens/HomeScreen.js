@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Platform, TextInput, ActivityIndicator, Image, Alert } from 'react-native'
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Platform, TextInput, ActivityIndicator, Image, Alert } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { LinearGradient } from 'expo-linear-gradient';
-import { TextInputMask } from 'react-native-masked-text'
+import { TextInputMask } from 'react-native-masked-text';
 import { Feather, FontAwesome, Entypo } from '@expo/vector-icons';
 import { useTheme } from 'react-native-paper';
 import useStateWithCallback from '../hooks/useStateWithCallback';
@@ -73,7 +73,7 @@ export default function HomeScreen({ navigation }) {
 
         if (verification() && !loading) {
             setLoading(true, async () => {
-                await new setToken(JSON.stringify(newUser)).then(() => {
+                await setToken(JSON.stringify(newUser)).then(() => {
                     setTimeout(() => {
                         navigation.reset({
                             index: 0,
