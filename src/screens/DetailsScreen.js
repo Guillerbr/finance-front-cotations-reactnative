@@ -63,7 +63,13 @@ export default function DetailsScreen({ route }) {
                     :
                     detailsProps.id == 'gainsPrice' ?
                         <>
-
+                            <TextDetails colors={detailsProps.colors} text={'Data da compra: ' + detailsProps.gains.start['date']} />
+                            <TextDetails colors={detailsProps.colors} text={'Valor da ação comprada: R$' + formatToLocale(detailsProps.gains.start['open'].toString())} />
+                            <TextDetails colors={detailsProps.colors} text={'Valor da ação Hoje: R$' + formatToLocale(detailsProps.gains.end['open'].toString())} />
+                            <TextDetails colors={detailsProps.colors} text={'Valor pago nas ações: R$' + formatToLocale(detailsProps.pricePay.toString())} />
+                            <TextDetails colors={detailsProps.colors} text={'Lucro: R$' + formatToLocale(detailsProps.profitInPortfolio.toString())} />
+                            <TextDetails colors={detailsProps.colors} text={'Lucro no portifólio: R$' + formatToLocale((detailsProps.value + detailsProps.profitInPortfolio).toString())} />
+                            <TextDetails colors={detailsProps.colors} text={'Valor do portifólio: R$' + formatToLocale(detailsProps.value.toString())} />
                         </>
                         :
                         <>

@@ -7,13 +7,12 @@ import moment from 'moment';
 
 import Card from './Card';
 import ButtonDate from './ButtonDate';
+import Input from './Input';
 
 import { queryLastRefreshed } from '../api/Querys';
-import { catchHistoricPrice } from '../utils/Functions';
+import { catchHistoricPrice, datesCheck, projectionGains } from '../utils/Functions';
 
-export default function CompanyCards({ colors, company, navigation, input }) {
-
-    const date = new Date()
+export default function CompanyCards({ user, colors, company, navigation, input }) {
 
     const [showModal, setShowModal] = useState(false)
     const [showModalDate, setShowModalDate] = useState(false)
@@ -22,6 +21,7 @@ export default function CompanyCards({ colors, company, navigation, input }) {
     const [index, setIndex] = useState('')
     const [whoIsModal, setWhoIsModal] = useState('')
 
+    const [InputQuantify, setInputQuantify] = useState('')
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
 
@@ -39,14 +39,6 @@ export default function CompanyCards({ colors, company, navigation, input }) {
         }
     }, [company])
 
-    const historicPrice = useCallback(() => {
-        if (!showModal) {
-            setShowModal(true)
-            setWhoIsModal('historic')
-        }
-    }, [company, showModal])
-
-
     const comparePrice = useCallback(async () => {
         navigation.navigate('DetailsScreen', {
             id: 'comparePrice',
@@ -55,15 +47,22 @@ export default function CompanyCards({ colors, company, navigation, input }) {
         })
     }, [company])
 
+    const historicPrice = useCallback(() => {
+        if (!showModal) {
+            setShowModal(true)
+            setWhoIsModal('historic')
+        }
+    }, [company, showModal])
+
     const gainsPrice = useCallback(() => {
         if (!showModal) {
             setShowModal(true)
             setWhoIsModal('gains')
         }
-    }, [company])
+    }, [company, showModal])
 
     const confirmDate = useCallback((selectedDate) => {
-        setShowModalDate(false)
+        console.log(selectedDate)
         if (index === 'end') {
             if (startDate) {
                 if (moment(selectedDate).isAfter(moment(startDate))) {
@@ -82,6 +81,7 @@ export default function CompanyCards({ colors, company, navigation, input }) {
                 }
             } else setStartDate(moment.utc(selectedDate).format('YYYY-MM-DD'))
         }
+        setShowModalDate(false)
     }, [index, startDate, endDate])
 
     const openDatePicker = (index) => {
@@ -89,33 +89,28 @@ export default function CompanyCards({ colors, company, navigation, input }) {
         setIndex(index)
     }
 
-    const datesCheck = () => {
-        if (startDate && endDate) {
-            if (startDate !== endDate) {
-                return true
-            } else {
-                Alert.alert('Aviso', 'Selecione começo e fim diferentes para continuar')
-                return false
-            }
-        }
-        return false
-    }
-
     const goTo = async () => {
-        if (datesCheck()) {
-            setLoading(true)
-            if (whoIsModal === 'historic') {
+        setLoading(true)
+        if (whoIsModal === 'historic') {
+            if (datesCheck(startDate, endDate)) {
                 await catchHistoricPrice(input, startDate, endDate, navigation, colors)
                 clearStates()
-            } else if (whoIsModal === 'gains') {
+            }
+        } else if (whoIsModal === 'gains') {
+            if (startDate, InputQuantify) {
+                await projectionGains(input, startDate, InputQuantify, user, navigation, colors)
                 clearStates()
+            } else {
+                Alert.alert('Aviso', 'Selecione começo e quantidade para continuar')
             }
         }
+        setLoading(false)
     }
 
     const clearStates = useCallback(() => {
         setShowModal(false)
         setLoading(false)
+        setInputQuantify('')
         setIndex('')
         setWhoIsModal('')
         setStartDate('')
@@ -150,12 +145,23 @@ export default function CompanyCards({ colors, company, navigation, input }) {
                                     icon={'date'}
                                     text={startDate || 'Início'}
                                 />
-                                <ButtonDate
+
+                                {whoIsModal === 'historic' ? <ButtonDate
                                     onPress={() => openDatePicker('end')}
                                     colors={colors}
                                     icon={'date'}
                                     text={endDate || 'Fim'}
                                 />
+
+                                    :
+                                    <Input
+                                        colors={colors}
+                                        placeholder={'Quantidade de ações'}
+                                        change={(text) => setInputQuantify(text)}
+                                        value={InputQuantify}
+                                        onSubmit={goTo}
+                                    />
+                                }
 
                                 <View style={styles.viewButtons}>
 
@@ -177,7 +183,6 @@ export default function CompanyCards({ colors, company, navigation, input }) {
                 </View>
             </Modal>
 
-
             <View style={styles.column}>
                 <Card onPress={currentPrice} text={'Preço atual'} colors={colors} />
                 <Card onPress={historicPrice} text={'Preço histórico'} colors={colors} />
@@ -188,10 +193,10 @@ export default function CompanyCards({ colors, company, navigation, input }) {
                 <Card onPress={gainsPrice} text={'Projeção de ganhos'} colors={colors} />
             </View>
 
-
             <DateTimePickerModal
                 isVisible={showModalDate}
                 mode="date"
+                maximumDate={new Date()}
                 onConfirm={confirmDate}
                 onCancel={() => setShowModalDate(false)}
             />

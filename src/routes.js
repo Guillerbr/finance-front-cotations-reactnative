@@ -35,6 +35,7 @@ const Routes = () => {
 
     useEffect(() => {
         LogBox.ignoreLogs(['Require cycle:'])
+        LogBox.ignoreLogs(['Possible Unhandled Promise Rejection'])
     }, [])
 
     useEffect(() => {

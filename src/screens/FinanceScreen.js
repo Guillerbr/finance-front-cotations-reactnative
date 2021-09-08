@@ -59,11 +59,11 @@ export default function FinanceScreen({ navigation }) {
             LoadingData()
         }
     }
+
     return (
         <View style={[styles.container, {
             backgroundColor: colors.background
         }]}>
-
             <Modal
                 animationType="fade"
                 transparent={true}
